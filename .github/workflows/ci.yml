@@ -1,31 +1,32 @@
 name: Python CI Build and Test
 
 on:
-  # Код main бранчіне жіберілгенде іске қосады
   push:
     branches:
       - main
+  # Қолмен іске қосуға мүмкіндік беру (қажет емес, бірақ пайдалы)
+  workflow_dispatch:
 
 jobs:
   build-and-test:
-    # Жұмысты орындау үшін операциялық жүйе
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout Code
-      # Репозиторий кодын виртуалды машинаға жүктейді
       uses: actions/checkout@v4
       
     - name: Set up Python 3.10
-      # Python ортасын орнатады
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
+        cache: 'pip' # Жылдамдату үшін кэштеуді қосамыз
         
     - name: Install Dependencies
-      # requirements.txt файлын пайдаланып тәуелділіктерді (pytest) орнатады
-      run: pip install -r requirements.txt
+      # pip тәуелділіктерін орнату
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
       
-    - name: Run Pytest
-      # Тесттерді іске қосады
+    - name: Run Pytest Tests
+      # Тесттерді іске қосу
       run: pytest
