@@ -1,2 +1,2 @@
 def add(a, b):
-    return a + 1 # Қасақана қате
+    return a + b
